@@ -1,0 +1,58 @@
+@hostname = http://localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+###
+# Create a new book
+POST {{host}}/book  HTTP/1.1
+content-type: application/json
+
+{
+    "id": 1,
+    "title": "Automated REST tests",
+    "description": "Are only cool when they're actually automated",
+    "price": 13.37
+}
+
+###
+# Same as above, but with different data
+POST {{host}}/book  HTTP/1.1
+content-type: application/json
+
+{
+    "id": 2,
+    "title": "I just released my second book",
+    "description": "And thought you might think it's cool.",
+    "price": 42.42
+}
+
+###
+# Get all book
+GET {{host}}/books HTTP/1.1
+
+###
+# Get book 1
+GET {{host}}/book/1 HTTP/1.1
+
+###
+# Get book 3 - should fail with 404
+GET {{host}}/book/3 HTTP/1.1
+
+###
+# Get book 'schorle'
+GET {{host}}/book/schorle HTTP/1.1
+
+###
+# Delete book 1
+DELETE {{host}}/book/1 HTTP/1.1
+
+###
+# Update book 1
+PUT {{host}}/book HTTP/1.1
+
+{
+    "id": 1,
+    "title": "I changed my mind",
+    "description": "And rewrote the whole book.",
+    "price": 42.42
+}

@@ -4,12 +4,6 @@ A small playground application which consists of a REST API (crud actions) that 
 
 - [books-go](#books-go)
   - [Repo structure](#repo-structure)
-    - [`main.go`](#maingo)
-    - [`api/`](#api)
-    - [`data/`](#data)
-    - [`storage/`](#storage)
-    - [`utilities/`](#utilities)
-    - [`test.http`](#testhttp)
   - [Overview](#overview)
   - [Usage](#usage)
     - [Running](#running)
@@ -21,39 +15,15 @@ A small playground application which consists of a REST API (crud actions) that 
 ```txt
 .
 ├── README.md
-├── api
-├── data
+├── api               # contains the actual server logic. CRUD routes, middleware registration, ...
+├── data              # models for our backend data
 ├── go.mod
 ├── go.sum
-├── main.go
-├── storage
+├── cmd/main.go       # firestarter for application. holds some config and does nothing else than starting up.
+├── storage           # storage interface to keep interchangeable between in-memory and other storages
 ├── test.http
-└── utilities
+└── utilities         # unused yet, might come in handy later.
 ```
-
-### `main.go`
-
-`main.go` is only the firestarter for our application. It does not hold any logic besides starting the server with some bunch of config.
-
-### `api/`
-
-Holds the server logic, including middleware, Fiber handling, route registration and CRUD routes themselves.
-
-### `data/`
-
-Holds data models.
-
-### `storage/`
-
-Interfacing module for persistence. Holds a `InMemoryStorage` for local testing and a (to be implemented) `PostgresqlStorage`.
-
-### `utilities/`
-
-Empty at the moment but might come in handy later for common utility functions / operations.
-
-### `test.http`
-
-Holds some fancy API calls for local testing. Comes in handy when trying to find out if I copulated with API functionality.
 
 ## Overview
 

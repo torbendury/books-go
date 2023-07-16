@@ -35,7 +35,9 @@ A small playground application which consists of a REST API (crud actions) that 
 
 After installing dependencies using `go get`, you should be able to run the project with `go run cmd/main.go`. The server will start up and be reachable at [`http://localhost:3000`](http://localhost:3000).
 
-See [`test.http`](test.http) for available API endpoints.
+See [`test.http`](hack/test.http) for available API endpoints.
+
+If you want to use PostgreSQL as a backend and don't have any at hand, you can use the [docker-compose](hack/docker-compose.yml) file to spin one up.
 
 ## TODOs
 

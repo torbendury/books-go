@@ -1,3 +1,4 @@
+// Package api contains the server logic. Its purpose is to handle Fiber logic and provide functionality to create new servers and start them up.
 package api
 
 import (

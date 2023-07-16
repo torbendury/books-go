@@ -1,3 +1,5 @@
+// Package storage contains interfaces and implementations for different storage usage.
+// At the time of writing, in-memory (temporary) and PostgreSQL is implemented.
 package storage
 
 import (

@@ -57,78 +57,7 @@ Holds some fancy API calls for local testing. Comes in handy when trying to find
 
 ## Overview
 
-```plantuml
-@startuml
-package api{
-annotation api {
-
-
-+NewServer(store Storage, listenAddress string, config Config): *Server
-}
-class Server {
--store: Storage
--listenAddress: string
--fiberApp: *App
-+Start(): error
--handleGetBookById(c *Ctx): error
--handleGetAllBooks(c *Ctx): error
--handleCreateBook(c *Ctx): error
--handleDeleteBook(c *Ctx): error
--handleUpdateBook(c *Ctx): error
-}
-}
-package cmd{
-annotation cmd {
-
-
--main()
-}
-}
-package data{
-class Book {
-+ID: int
-+Title: string
-+Description: string
-+Price: float64
-
-}
-}
-package storage{
-annotation storage {
-
-
-+NewInMemoryStorage(): *InMemoryStorage
-+NewPostgresqlStorage(): *PostgresqlStorage
-}
-interface Storage{
-+Create( *Book): error
-+Get( int): *Book, error
-+GetAll(): []Book
-+Update( *Book): *Book, error
-+Delete( int): error
-}
-class InMemoryStorage {
-+Database: []Book
-+Get(id int): *Book, error
-+GetAll(): []Book
-+Create(b *Book): error
-+Update(b *Book): *Book, error
-+Delete(id int): error
-}
-class PostgresqlStorage {
-+Database: []Book
-+Get(id int): *Book, error
-+GetAll(): []Book
-+Create(b *Book): error
-+Update(b *Book): *Book, error
-+Delete(id int): error
-}
-}
-
-"InMemoryStorage" --|> "Storage"
-"PostgresqlStorage" --|> "Storage"
-@enduml
-```
+![tech overview](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/torbendury/books-go/main/docs/graph.puml)
 
 ## Usage
 

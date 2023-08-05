@@ -5,6 +5,7 @@ annotation api {
 
 
 +NewServer(store Storage, listenAddress string, config Config): *Server
+-validateId(id int): error
 }
 class Server {
 -store: Storage
@@ -31,7 +32,7 @@ class Book {
 +Title: string
 +Description: string
 +Price: float64
-
++Validate(): error
 }
 }
 package storage{
@@ -39,10 +40,11 @@ annotation storage {
 
 
 +NewInMemoryStorage(): *InMemoryStorage
-+NewPostgresqlStorage(): *PostgresqlStorage
++NewPostgresqlStorage(db *DB): *PostgresqlStorage
++OpenDB(dbHost string, dbPort int, dbUser string, dbPass string, dbName string): *DB
 }
 interface Storage{
-+Create( *Book): error
++Create( *Book): *Book, error
 +Get( int): *Book, error
 +GetAll(): []Book
 +Update( *Book): *Book, error
@@ -50,17 +52,18 @@ interface Storage{
 }
 class InMemoryStorage {
 +Database: []Book
+-idSerial: int
 +Get(id int): *Book, error
 +GetAll(): []Book
-+Create(b *Book): error
++Create(b *Book): *Book, error
 +Update(b *Book): *Book, error
 +Delete(id int): error
 }
 class PostgresqlStorage {
-+Database: []Book
+-databaseConnection: *DB
 +Get(id int): *Book, error
 +GetAll(): []Book
-+Create(b *Book): error
++Create(b *Book): *Book, error
 +Update(b *Book): *Book, error
 +Delete(id int): error
 }

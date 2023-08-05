@@ -8,7 +8,6 @@ POST {{host}}/book  HTTP/1.1
 content-type: application/json
 
 {
-    "id": 1,
     "title": "Automated REST tests",
     "description": "Are only cool when they're actually automated",
     "price": 13.37
@@ -20,14 +19,13 @@ POST {{host}}/book  HTTP/1.1
 content-type: application/json
 
 {
-    "id": 2,
     "title": "I just released my second book",
     "description": "And thought you might think it's cool.",
     "price": 42.42
 }
 
 ###
-# Get all book
+# Get all books
 GET {{host}}/books HTTP/1.1
 
 ###
@@ -35,11 +33,11 @@ GET {{host}}/books HTTP/1.1
 GET {{host}}/book/1 HTTP/1.1
 
 ###
-# Get book 3 - should fail with 404
+# Get book 3
 GET {{host}}/book/3 HTTP/1.1
 
 ###
-# Get book 'schorle'
+# Get book 'schorle' - parsing should fail
 GET {{host}}/book/schorle HTTP/1.1
 
 ###
@@ -51,7 +49,7 @@ DELETE {{host}}/book/1 HTTP/1.1
 PUT {{host}}/book HTTP/1.1
 
 {
-    "id": 1,
+    "id": 10,
     "title": "I changed my mind",
     "description": "And rewrote the whole book.",
     "price": 42.42

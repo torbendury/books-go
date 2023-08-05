@@ -4,6 +4,7 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 
@@ -63,11 +64,21 @@ func (s *Server) Start() error {
 	return s.fiberApp.Listen(s.listenAddress)
 }
 
+func validateId(id int) error {
+	if id <= 0 {
+		return errors.New("id can not be less than or equal to 0")
+	}
+	return nil
+}
+
 // handleGetBookById checks if a correct ID has been requested, a book with the requested ID
 // exists in the store and returns it if it exists.
 func (s *Server) handleGetBookById(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
+		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
+	}
+	if err = validateId(id); err != nil {
 		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
 	}
 	book, err := s.store.Get(id)
@@ -88,16 +99,19 @@ func (s *Server) handleGetAllBooks(c *fiber.Ctx) error {
 // If any error occurs during persisting the book, the error is returned.
 // If the book has been created, it is returned to the client.
 func (s *Server) handleCreateBook(c *fiber.Ctx) error {
-	body := new(data.Book)
-	err := c.BodyParser(body)
+	book := new(data.Book)
+	err := c.BodyParser(book)
 	if err != nil {
 		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
 	}
-	err = s.store.Create(body)
+	if err = book.Validate(); err != nil {
+		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
+	}
+	resultBook, err := s.store.Create(book)
 	if err != nil {
 		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
 	}
-	return c.Status(fiber.StatusAccepted).JSON(body)
+	return c.Status(fiber.StatusAccepted).JSON(resultBook)
 }
 
 // handleDeleteBook validates the requested book ID. If it is valid, the store is called to check
@@ -108,13 +122,11 @@ func (s *Server) handleDeleteBook(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
 	}
-	_, err = s.store.Get(id)
-	if err != nil {
-		return fiber.NewError(fiber.ErrNotFound.Code, err.Error())
+	if err = validateId(id); err != nil {
+		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
 	}
-	err = s.store.Delete(id)
-	if err != nil {
-		return fiber.NewError(fiber.ErrBadGateway.Code, err.Error())
+	if err = s.store.Delete(id); err != nil {
+		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
 	}
 	return c.SendStatus(fiber.StatusOK)
 }
@@ -123,14 +135,12 @@ func (s *Server) handleDeleteBook(c *fiber.Ctx) error {
 // If the body is valid, the book is being looked up in the store.
 // If the book exists, it is updated and the updated book is returned to the client.
 func (s *Server) handleUpdateBook(c *fiber.Ctx) error {
-	body := new(data.Book)
-	err := c.BodyParser(body)
+	book := new(data.Book)
+	err := c.BodyParser(book)
 	if err != nil {
-		fmt.Printf("Oops. Can't put this into a book: %v\n", string(c.Body()))
-		fmt.Println(err.Error())
 		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
 	}
-	book, err := s.store.Update(body)
+	book, err = s.store.Update(book)
 	if err != nil {
 		return fiber.NewError(fiber.ErrNotFound.Code, err.Error())
 	}

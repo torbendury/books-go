@@ -12,12 +12,14 @@ import (
 // Note: The InMemoryStorage is being thrown away when the application is stopped and therefore is not intended for any kind of usage beside testing.
 type InMemoryStorage struct {
 	Database []data.Book
+	idSerial int
 }
 
 // NewInMemoryStorage returns a new InMemoryStorage pointer, initialized with an empty database which is represented by an empty slice of Books.
 func NewInMemoryStorage() *InMemoryStorage {
 	return &InMemoryStorage{
 		Database: make([]data.Book, 0),
+		idSerial: 0,
 	}
 }
 
@@ -36,14 +38,13 @@ func (ims *InMemoryStorage) GetAll() []data.Book {
 	return ims.Database
 }
 
-// Create checks if the given Book already exists by searching the database for its ID. If the book isn't found, it is created.
-func (ims *InMemoryStorage) Create(b *data.Book) error {
-	book, err := ims.Get(b.ID)
-	if err != nil {
-		ims.Database = append(ims.Database, *b)
-		return nil
-	}
-	return fmt.Errorf("book id %v already exists", book.ID)
+// Create creates a new book in the InMemoryStorage.
+// To implement the interface of a Storage, it is able to return an error.
+func (ims *InMemoryStorage) Create(b *data.Book) (*data.Book, error) {
+	ims.idSerial++
+	b.ID = ims.idSerial
+	ims.Database = append(ims.Database, *b)
+	return b, nil
 }
 
 // Update checks if the given book exists by searching the database for its ID. If it is found, the entry in the database is replaced by the given Book.

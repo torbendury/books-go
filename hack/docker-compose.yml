@@ -9,9 +9,12 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
       PGDATA: /data/postgres
     volumes:
-       - postgres:/data/postgres
+      - postgres:/data/postgres
+      # some cool voodoo to let you magically create stuff on DB instance init.
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./sql/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
     ports:
-      - "5432:5432"
+      - '5432:5432'
     restart: unless-stopped
   pgadmin:
     container_name: pgadmin_container
@@ -21,13 +24,13 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
-       - pgadmin:/var/lib/pgadmin
+      - pgadmin:/var/lib/pgadmin
     ports:
-      - "${PGADMIN_PORT:-5050}:80"
+      - '${PGADMIN_PORT:-5050}:80'
     restart: unless-stopped
 volumes:
-    postgres:
-    pgadmin:
+  postgres:
+  pgadmin:
 # After first startup, visit http://localhost:80 to configure a connection between pgAdmin and the PostgreSQL instance.
 # The default passwords are visible above.
 # On the next startup, everything should be connected automagically.

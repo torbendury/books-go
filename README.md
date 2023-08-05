@@ -41,10 +41,7 @@ If you want to use PostgreSQL as a backend and don't have any at hand, you can u
 
 ## TODOs
 
-- Implement PostgresqlStorage
-- Fix updating books
-- Write docs!
-- Go and see if all those dependencies are "needed" for this small project or can be cleaned up
+See [TODO](TODO).
 
 ## Generating puml
 

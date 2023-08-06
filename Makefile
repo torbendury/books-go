@@ -1,3 +1,5 @@
+CGO_ENABLED:=1
+
 startpsql:
 	cd hack
 	docker compose -f hack/docker-compose.yml down
@@ -22,7 +24,13 @@ clean:
 	go mod tidy -v
 	go mod verify
 	go vet ./...
+	go clean
 
 test:
-	go test ./... -coverprofile=cover.out -timeout 2s
+	go test -race ./... -coverprofile=cover.out -timeout 2s
 	go tool cover --html=cover.out
+
+build:
+	go build -race -o bin/books-api cmd/main.go
+
+all: clean test build

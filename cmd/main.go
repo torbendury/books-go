@@ -48,5 +48,8 @@ func main() {
 			ReadTimeout:  time.Duration(time.Second),
 		})
 	}
-	server.Start()
+	err := server.Start()
+	if err != nil {
+		panic(err)
+	}
 }

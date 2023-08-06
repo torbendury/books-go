@@ -2,28 +2,16 @@
 // Changes in the data structures will probably cause API to break without also changing the logic itself.
 package data
 
-import "errors"
-
 // Struct book is a public struct which described a single book and its JSON representation.
 type Book struct {
-	ID          int     `json:"id"`
-	Title       string  `json:"title"`
-	Description string  `json:"description"`
-	Price       float64 `json:"price"`
+	ID          int     `json:"id" validate:"numeric,min=0"`
+	Title       string  `json:"title" validate:"required,min=1"`
+	Description string  `json:"description" validate:"required,min=1"`
+	Price       float64 `json:"price" validate:"required,numeric,min=0"`
 }
 
-func (b *Book) Validate() error {
-	if b.ID < 0 {
-		return errors.New("id must not be less than 0")
-	}
-	if len(b.Title) < 1 {
-		return errors.New("title must not be empty")
-	}
-	if len(b.Description) < 1 {
-		return errors.New("description must not be empty")
-	}
-	if b.Price <= 0 {
-		return errors.New("price must not be less than or equal to 0")
-	}
-	return nil
+type BookValidationError struct {
+	Field string
+	Tag   string
+	Value string
 }

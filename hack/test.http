@@ -14,7 +14,7 @@ content-type: application/json
 }
 
 ###
-# Same as above, but with different data
+# Create a new book
 POST {{host}}/book  HTTP/1.1
 content-type: application/json
 
@@ -54,4 +54,15 @@ content-type: application/json
     "title": "I changed my mind",
     "description": "And rewrote the whole book.",
     "price": 42.42
+}
+
+###
+# Test Validation Errors
+PUT {{host}}/book HTTP/1.1
+content-type: application/json
+
+{
+    "id": 1,
+    "title": "",
+    "description": ""
 }

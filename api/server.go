@@ -4,10 +4,10 @@ package api
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/torbendury/books-go/data"
@@ -21,6 +21,7 @@ type Server struct {
 	store         storage.Storage
 	listenAddress string
 	fiberApp      *fiber.App
+	validator     *validator.Validate
 }
 
 // NewServer returns a new Server instance. This Server instance is basically idling until the Start() method is called.
@@ -29,6 +30,7 @@ func NewServer(store storage.Storage, listenAddress string, config fiber.Config)
 		store:         store,
 		listenAddress: listenAddress,
 		fiberApp:      fiber.New(config),
+		validator:     validator.New(),
 	}
 }
 
@@ -55,20 +57,33 @@ func (s *Server) Start() error {
 			},
 		}),
 	)
-	s.fiberApp.Post("/book", s.handleCreateBook)
+
+	s.fiberApp.Post("/book", s.ValidateBook, s.handleCreateBook)
 	s.fiberApp.Get("/book/:id", s.handleGetBookById)
 	s.fiberApp.Get("/books", s.handleGetAllBooks)
-	s.fiberApp.Put("/book", s.handleUpdateBook)
+	s.fiberApp.Put("/book", s.ValidateBook, s.handleUpdateBook)
 	s.fiberApp.Delete("/book/:id", s.handleDeleteBook)
 
 	return s.fiberApp.Listen(s.listenAddress)
 }
 
-func validateId(id int) error {
-	if id <= 0 {
-		return errors.New("id can not be less than or equal to 0")
+func (s *Server) ValidateBook(c *fiber.Ctx) error {
+	var errors []*data.BookValidationError
+	body := new(data.Book)
+	c.BodyParser(&body)
+
+	err := s.validator.Struct(body)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var el data.BookValidationError
+			el.Field = err.Field()
+			el.Tag = err.Tag()
+			el.Value = err.Param()
+			errors = append(errors, &el)
+		}
+		return c.Status(fiber.StatusBadRequest).JSON(errors)
 	}
-	return nil
+	return c.Next()
 }
 
 // handleGetBookById checks if a correct ID has been requested, a book with the requested ID
@@ -76,9 +91,6 @@ func validateId(id int) error {
 func (s *Server) handleGetBookById(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
-		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
-	}
-	if err = validateId(id); err != nil {
 		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
 	}
 	book, err := s.store.Get(id)
@@ -104,9 +116,6 @@ func (s *Server) handleCreateBook(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
 	}
-	if err = book.Validate(); err != nil {
-		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
-	}
 	resultBook, err := s.store.Create(book)
 	if err != nil {
 		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
@@ -120,9 +129,6 @@ func (s *Server) handleCreateBook(c *fiber.Ctx) error {
 func (s *Server) handleDeleteBook(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
-		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
-	}
-	if err = validateId(id); err != nil {
 		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
 	}
 	if err = s.store.Delete(id); err != nil {

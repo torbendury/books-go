@@ -39,6 +39,8 @@ See [`test.http`](hack/test.http) for available API endpoints.
 
 If you want to use PostgreSQL as a backend and don't have any at hand, you can use the [docker-compose](hack/docker-compose.yml) file to spin one up.
 
+**NOTE:** The DB init scripts only run on the first time. To run them again and effectively clean up your database, you will want to prune the docker volumes after a shutdown. See also [notes](hack/NOTES.md).
+
 ## TODOs
 
 See [TODO](TODO).

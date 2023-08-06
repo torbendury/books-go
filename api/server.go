@@ -68,6 +68,9 @@ func (s *Server) Start() error {
 	return s.fiberApp.Listen(s.listenAddress)
 }
 
+// ValidateBook is a middleware handler for schema validation.
+// This enables us to encapsulate user input validation without worrying about it in every handler.
+// As seen in `Start()`, we can register it as a middleware handler easily.
 func (s *Server) ValidateBook(c *fiber.Ctx) error {
 	var errors []*data.BookValidationError
 	body := new(data.Book)

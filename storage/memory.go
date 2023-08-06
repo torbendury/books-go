@@ -40,6 +40,7 @@ func (ims *InMemoryStorage) GetAll() []data.Book {
 
 // Create creates a new book in the InMemoryStorage.
 // To implement the interface of a Storage, it is able to return an error.
+// TODO: Implement a friendly case in which this returns an error so we can unit-test.
 func (ims *InMemoryStorage) Create(b *data.Book) (*data.Book, error) {
 	ims.idSerial++
 	b.ID = ims.idSerial

@@ -24,4 +24,5 @@ clean:
 	go vet ./...
 
 test:
-	@echo See you later.
+	go test ./... -coverprofile=cover.out -timeout 2s
+	go tool cover --html=cover.out

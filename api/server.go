@@ -35,6 +35,7 @@ func NewServer(store storage.Storage, listenAddress string, config fiber.Config)
 }
 
 // Start is responsible for configuring middleware, registering routes and putting the Fiber app in listen mode.
+// Since this is effectively starting process forks etc. and is never really "ending", we can not unit-test this.
 func (s *Server) Start() error {
 	s.fiberApp.Use(
 		logger.New(logger.Config{
@@ -132,7 +133,7 @@ func (s *Server) handleDeleteBook(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
 	}
 	if err = s.store.Delete(id); err != nil {
-		return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
+		return fiber.NewError(fiber.ErrNotFound.Code, err.Error())
 	}
 	return c.SendStatus(fiber.StatusOK)
 }

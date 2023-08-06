@@ -4,7 +4,6 @@ package main
 import (
 	"database/sql"
 	"flag"
-	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -27,11 +26,6 @@ func main() {
 
 	var server *api.Server
 	if *postgresMode {
-		fmt.Println("Starting server in PostgreSQL mode")
-		fmt.Println("DB Host: ", *postgresHost)
-		fmt.Println("DB Port: ", *postgresPort)
-		fmt.Println("DB User: ", *postgresUser)
-		fmt.Println("DB Pass: ", *postgresPass)
 		db := storage.OpenDB(*postgresHost, *postgresPort, *postgresUser, *postgresPass, *postgresDb)
 		server = api.NewServer(storage.NewPostgresqlStorage(db), ":3000", fiber.Config{
 			ServerHeader:          "books-go 0.0.1",
@@ -42,7 +36,6 @@ func main() {
 		})
 		defer func(db *sql.DB) {
 			err := db.Close()
-			fmt.Println("Closing DB.")
 			if err != nil {
 				panic(err)
 			}

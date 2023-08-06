@@ -94,7 +94,6 @@ func (psql *PostgresqlStorage) Create(b *data.Book) (*data.Book, error) {
 	var resultBook data.Book
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
-
 	err := psql.databaseConnection.QueryRowContext(ctx, query, b.Title, b.Description, b.Price).Scan(
 		&resultBook.ID,
 		&resultBook.Title,
@@ -118,7 +117,6 @@ func (psql *PostgresqlStorage) Update(b *data.Book) (*data.Book, error) {
 	var resultBook data.Book
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
-
 	err := psql.databaseConnection.QueryRowContext(ctx, query, b.ID, b.Title, b.Description, b.Price).Scan(
 		&resultBook.ID,
 		&resultBook.Title,

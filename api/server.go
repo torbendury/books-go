@@ -72,7 +72,6 @@ func (s *Server) ValidateBook(c *fiber.Ctx) error {
 	var errors []*data.BookValidationError
 	body := new(data.Book)
 	c.BodyParser(&body)
-
 	err := s.validator.Struct(body)
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {

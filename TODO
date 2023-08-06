@@ -5,6 +5,6 @@ Todo:
   ✔ Fix updating books - atm it returns 'Unprocessable Entity', don't really know why @done(23-08-06 14:10)
   ☐ Implement limiting and pagination for GetAll
   ☐ Check and write docs
-  ☐ Check refactor styling of code blocks
+  ✔ Check refactor styling of code blocks @done(23-08-06 18:52)
   ☐ see if all those dependencies are "needed" for this small project or can be cleaned up
-  ☐ Write unit tests @started(23-08-06 18:00)
+  ✔ Write unit tests @started(23-08-06 18:00) @done(23-08-06 18:51) @lasted(51m15s)

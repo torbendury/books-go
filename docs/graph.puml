@@ -5,13 +5,14 @@ annotation api {
 
 
 +NewServer(store Storage, listenAddress string, config Config): *Server
--validateId(id int): error
 }
 class Server {
 -store: Storage
 -listenAddress: string
 -fiberApp: *App
+-validator: *Validate
 +Start(): error
++ValidateBook(c *Ctx): error
 -handleGetBookById(c *Ctx): error
 -handleGetAllBooks(c *Ctx): error
 -handleCreateBook(c *Ctx): error
@@ -32,7 +33,13 @@ class Book {
 +Title: string
 +Description: string
 +Price: float64
-+Validate(): error
+
+}
+class BookValidationError {
++Field: string
++Tag: string
++Value: string
+
 }
 }
 package storage{

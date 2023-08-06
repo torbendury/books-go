@@ -31,11 +31,19 @@ A small playground application which consists of a REST API (crud actions) that 
 
 ### 🏃 Running
 
-After installing dependencies using `go get`, you should be able to run the project with `go run cmd/main.go`. The server will start up and be reachable at [`http://localhost:3000`](http://localhost:3000).
+Run `make run`. The server will start up and be reachable at [`http://localhost:3000`](http://localhost:3000).
 
 See [`test.http`](hack/test.http) for available API endpoints.
 
-If you want to use PostgreSQL as a backend and don't have any at hand, you can use the [docker-compose](hack/docker-compose.yml) file to spin one up.
+If you want to use PostgreSQL as a backend and don't have any at hand, you can use the [docker-compose](hack/docker-compose.yml) file to spin one up, or use the Makefile directly:
+
+```bash
+make startpsql
+make runpg
+
+# when you're finished, stop the PSQL and clean up
+make stoppsql
+```
 
 **NOTE:** The DB init scripts only run on the first time. To run them again and effectively clean up your database, you will want to prune the docker volumes after a shutdown. See also [notes](hack/NOTES.md).
 
@@ -45,4 +53,6 @@ See [TODO](TODO).
 
 ## 📷 Generating puml
 
-Run: `go-plantuml generate -d . -r`
+As seen above, you can generate PlantUML code from the repo. Run `make puml` for this.
+
+Note that until [this issue](https://github.com/bykof/go-plantuml/issues/27) is resolved, you have to manually adjust the PlantUML layout with `left to right direction`.

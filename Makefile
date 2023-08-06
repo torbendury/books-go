@@ -26,6 +26,9 @@ clean:
 	go vet ./...
 	go clean
 
+puml:
+	go-plantuml generate -d . -r
+
 test:
 	go test -race ./... -coverprofile=cover.out -timeout 2s
 	go tool cover --html=cover.out

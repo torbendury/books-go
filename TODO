@@ -2,7 +2,7 @@ TODO List for books-go
 
 Todo:
   ☐ Implement limiting and pagination for GetAll
-  ☐ see if all those dependencies are "needed" for this small project or can be cleaned up
+  ✔ see if all those dependencies are "needed" for this small project or can be cleaned up @done(23-08-07 21:16)
   ✔ Check and write docs @done(23-08-06 19:26)
   ✔ Check refactor styling of code blocks @done(23-08-06 18:52)
   ✔ Fix updating books - atm it returns 'Unprocessable Entity', don't really know why @done(23-08-06 14:10)

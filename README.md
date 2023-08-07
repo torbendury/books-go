@@ -6,11 +6,10 @@ A small playground application which consists of a REST API (crud actions) that 
 
 - [📚 books-go](#-books-go)
   - [🧬 Repo structure](#-repo-structure)
-  - [🖼️ Overview](#️-overview)
   - [👷 Usage](#-usage)
     - [🏃 Running](#-running)
   - [✔️ TODOs](#️-todos)
-  - [📷 Generating puml](#-generating-puml)
+  - [🖼️ Overview](#️-overview)
 
 ## 🧬 Repo structure
 
@@ -24,10 +23,6 @@ A small playground application which consists of a REST API (crud actions) that 
 ├── storage           # storage interface to keep interchangeable between in-memory and other storages
 └── utilities         # unused, might come in handy later.
 ```
-
-## 🖼️ Overview
-
-![PlantUML graphic](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/torbendury/books-go/main/docs/graph.puml)
 
 ## 👷 Usage
 
@@ -53,8 +48,6 @@ make stoppsql
 
 See [TODO](TODO).
 
-## 📷 Generating puml
+## 🖼️ Overview
 
-As seen above, you can generate PlantUML code from the repo. Run `make puml` for this.
-
-Note that until [this issue](https://github.com/bykof/go-plantuml/issues/27) is resolved, you have to manually adjust the PlantUML layout with `left to right direction`.
+![PlantUML graphic](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/torbendury/books-go/main/docs/graph.puml)

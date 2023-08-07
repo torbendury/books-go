@@ -19,6 +19,10 @@ run:
 runpg:
 	go run cmd/main.go -postgres
 
+compose:
+	docker compose -f hack/docker-compose.yml down
+	docker compose -f hack/docker-compose.yml up --build
+
 clean:
 	go fmt ./...
 	go mod tidy -v
@@ -34,6 +38,7 @@ test:
 	go tool cover --html=cover.out
 
 build:
-	go build -race -o bin/books-api cmd/main.go
+	docker build -t torbendury/books-go:test --target test .
+	docker build -t torbendury/books-go:latest .
 
 all: clean test build

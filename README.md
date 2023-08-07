@@ -28,21 +28,9 @@ A small playground application which consists of a REST API (crud actions) that 
 
 ### 🏃 Running
 
-Run `make run`. The server will start up and be reachable at [`http://localhost:3000`](http://localhost:3000).
+Run `make compose`. The server will start up and be reachable at [`http://localhost:3000`](http://localhost:3000).
 
-See [`test.http`](hack/test.http) for available API endpoints.
-
-If you want to use PostgreSQL as a backend and don't have any at hand, you can use the [docker-compose](hack/docker-compose.yml) file to spin one up, or use the Makefile directly:
-
-```bash
-make startpsql
-make runpg
-
-# when you're finished, stop the PSQL and clean up
-make stoppsql
-```
-
-**NOTE:** The DB init scripts only run on the first time. To run them again and effectively clean up your database, you will want to prune the docker volumes after a shutdown. See also [notes](hack/NOTES.md).
+See [`test.http`](hack/test.http) for available API endpoints which are ready for usage when you spin up the application.
 
 ## ✔️ TODOs
 

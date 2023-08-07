@@ -21,6 +21,8 @@ runpg:
 
 compose:
 	docker compose -f hack/docker-compose.yml down
+	docker volume prune -f
+	docker image prune -f
 	docker compose -f hack/docker-compose.yml up --build
 
 clean:

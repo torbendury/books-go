@@ -1,5 +1,7 @@
 # 📚 books-go
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/torbendury/books-go)](https://goreportcard.com/report/github.com/torbendury/books-go)
+
 A small playground application which consists of a REST API (crud actions) that allows you to create, read, update and delete books.
 
 - [📚 books-go](#-books-go)

@@ -66,3 +66,7 @@ content-type: application/json
     "title": "",
     "description": ""
 }
+
+###
+# Health Check
+GET {{host}}/health HTTP/1.1

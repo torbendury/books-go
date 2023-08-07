@@ -243,3 +243,22 @@ func Test_handleDeleteBook(t *testing.T) {
 	resp, _ = server.fiberApp.Test(req, -1)
 	assert.Equal(t, 400, resp.StatusCode)
 }
+
+func Test_handleHealthCheck(t *testing.T) {
+	// grab a fresh server
+	server := setupServer()
+	// register necessary route
+	server.fiberApp.Get("/health", server.handleHealthCheck)
+
+	// delete correct book
+	req := httptest.NewRequest("GET", "/health", nil)
+	resp, _ := server.fiberApp.Test(req, -1)
+	assert.Equal(t, 200, resp.StatusCode)
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Error(err)
+	}
+	assert.Equal(t, `{"message":"ok"}`, string(body))
+}

@@ -59,6 +59,7 @@ func (s *Server) Start() error {
 		}),
 	)
 
+	s.fiberApp.Get("/health", s.handleHealthCheck)
 	s.fiberApp.Post("/book", s.ValidateBook, s.handleCreateBook)
 	s.fiberApp.Get("/book/:id", s.handleGetBookById)
 	s.fiberApp.Get("/books", s.handleGetAllBooks)
@@ -154,4 +155,11 @@ func (s *Server) handleUpdateBook(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.ErrNotFound.Code, err.Error())
 	}
 	return c.JSON(book)
+}
+
+func (s *Server) handleHealthCheck(c *fiber.Ctx) error {
+	status := data.HealthStatus{
+		Message: "ok",
+	}
+	return c.JSON(status)
 }
